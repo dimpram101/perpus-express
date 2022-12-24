@@ -17,6 +17,10 @@ Book.hasMany(File, {
   foreignKey: "book_id"
 })
 
+Book.belongsTo(User, {
+  foreignKey: "user_id"
+})
+
 Book.belongsToMany(Category, { through: BookToCategory });
 Category.belongsToMany(Book, { through: BookToCategory });
 

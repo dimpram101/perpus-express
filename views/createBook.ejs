@@ -16,15 +16,15 @@
   <h1 class="text-2xl font-bold text-center mt-4">Create Book</h1>
 
   <div class="container m-auto mt-20 w-[516px]">
-    <form action="/book" method="post">
+    <form action="/book/create" method="post">
       <div class="mb-6">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Book Title</label>
-        <input type="email" id="email"
+        <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Book Title</label>
+        <input type="text" id="title" name="title"
           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          placeholder="name@flowbite.com" required>
+          placeholder="e.g: Heri Poter" required>
       </div>
       <div class="mb-6">
-        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Year Published</label>
+        <label for="published_year" class="block mb-2 text-sm font-medium text-gray-900">Year Published</label>
         <div class="relative">
           <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -36,34 +36,43 @@
           </div>
           <input datepicker type="text"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
-            placeholder="Select date">
+            placeholder="Select date" name="published_year">
         </div>
 
       </div>
       <div class="mb-6">
-        <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900">Repeat
-          password</label>
-        <input type="password" id="repeat-password"
-          class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          required>
+        <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Select Category</label>
+        <select id="category" name="category"
+          class="inputCategory bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+          <option selected value="">Select a category</option>
+          <% for( let index=0; index < categories.length; index++ ) { %>
+            <option value="<%= categories[index].id %>">
+              <%= categories[index].name %>
+            </option>
+          <% } %>
+        </select>
       </div>
-
+      <input name="categoryIDs[]" class="hidden">
       <button type="submit"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
         New Book</button>
     </form>
   </div>
-
-
-
-
-
-
-
-
 </body>
 <script>
+  const caterogySelected = []
+  $(".inputCategory").on('change', () => {
+    const catVal = $('.inputCategory').val();
+    caterogySelected.push(catVal);
 
+    $('.inputCategory option:selected').each(function () {
+        $(this).remove();
+    });
+    $(`.inputCategory option[value="no"]`).attr('selected', 'selected')
+
+    $("input[name='categoryIDs[]']").val(caterogySelected)
+    console.log($("input[name='categoryIDs[]']").val())
+  })
 </script>
 
 </html>

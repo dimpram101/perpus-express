@@ -11,7 +11,7 @@ const Book = db.define('books', {
     type: DataTypes.STRING
   },
   published_year: {
-    type: DataTypes.DATE
+    type: DataTypes.DATEONLY
   }
 }, {
   freezeTableName: true

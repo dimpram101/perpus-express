@@ -1,9 +1,18 @@
 import Book from "../models/book.js";
 import BookToCategory from "../models/book_to_category.js";
+import Category from "../models/category.js";
+import User from "../models/user.js";
 
 const getBook = async (req, res) => {
-  const book = await Book.findAll()
-
+  const book = await Book.findAll({
+    include: [{
+      attributes: ['name', 'email'],
+      model: User
+    }, {
+      attributes: ['name'],
+      model: Category
+    }]
+  })
   res.send(book)
 }
 
@@ -17,21 +26,32 @@ const getBookByID = async (req, res) => {
   res.send(book)
 }
 
-const showCreateBook = (req, res) => {
-  res.render('createBook')
+const showCreateBook = async (req, res) => {
+  const categories = await Category.findAll({attributes: ["name"]})
+  // res.send(categories)
+  res.render('createBook', {categories: categories})
 }
 
 const createBook = async (req, res) => {
   const { title, published_year, categoryIDs} = req.body
+  const cateId = categoryIDs[0].split(",").map(id => parseInt(id))
 
+  // return res.json({
+  //   title: title,
+  //   published_year: published_year,
+  //   categoryIDs: categoryIDs,
+  //   categoryIDsInt: cateId
+  // })
   const newBook = await Book.create({
     title: title,
     published_year: published_year,
   });
 
-  const bookCategory = await BookToCategory.create({
-    bookId: newBook.id,
-    categoryId: categoryIDs
+  cateId.forEach(id => {
+    BookToCategory.create({
+      bookId: newBook.id,
+      categoryId: id
+    })
   })
   
   res.send(newBook)
