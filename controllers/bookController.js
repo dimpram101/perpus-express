@@ -5,14 +5,15 @@ import File from "../models/file.js";
 import User from "../models/user.js";
 
 const getBook = async (req, res) => {
+  // const userId = req.session.
   const book = await Book.findAll({
-    include: [{
-      attributes: ['name', 'email'],
-      model: User
-    }, {
+    where: {
+      user_id: req.params.id
+    },
+    include: {
       attributes: ['name'],
       model: Category
-    }]
+    }
   })
   res.send(book)
 }
