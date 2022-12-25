@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import md5 from "blueimp-md5";
+import Book from "../models/book.js";
 
 const getUser = async (req, res) => {
   const user = await User.findAll();
@@ -9,7 +10,12 @@ const getUser = async (req, res) => {
 const getUserByID = async (req, res) => {
   const id = req.params.id;
   const user = await User.findOne({
-    where: { id: id }
+    where: { id: id },
+    include: [
+      {
+        model: Book,
+      }
+    ]
   });
   res.send(user);
 }
@@ -44,4 +50,4 @@ const updateUser = async (req, res) => {
     .catch(err => res.send("error mengupdate data", err))
 }
 
-export { getUser, getUserByID, createUser, deleteUser, updateUser }
+export default { getUser, getUserByID, createUser, deleteUser, updateUser }
