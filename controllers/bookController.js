@@ -6,9 +6,11 @@ import User from "../models/user.js";
 
 const getBook = async (req, res) => {
   // const userId = req.session.
+  const { id } = req.session.user
+  console.log(id)
   const book = await Book.findAll({
     where: {
-      user_id: req.params.id
+      user_id: id
     },
     include: {
       attributes: ['name'],
@@ -71,5 +73,6 @@ const deleteBook = (req, res) => {
   }).then(res.send("berhasil menghapus buku"))
     .catch(err => res.send(err))
 }
+
 
 export default { getBook, getBookByID, showCreateBook, createBook, deleteBook }

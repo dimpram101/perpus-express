@@ -3,9 +3,10 @@ import User from "../models/user.js";
 
 const index = (req, res) => {
   let message = req.session.err || "";
+  let user = req.session.user
   req.session.err = ""
-  console.log(req.session.user)
-  res.render('users/login', {message: message})
+  
+  res.render('users/login', {message: message, user: user})
 }
 
 const login = async (req, res) => {

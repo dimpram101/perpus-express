@@ -2,11 +2,6 @@ import User from "../models/user.js";
 import md5 from "blueimp-md5";
 import Book from "../models/book.js";
 
-const getUser = async (req, res) => {
-  const user = await User.findAll();
-  res.send(user);
-}
-
 const getUserByID = async (req, res) => {
   const id = req.params.id;
   const user = await User.findOne({
@@ -42,12 +37,17 @@ const deleteUser = (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-  await User.update(req.body, {
+  const { id } = req.session.user
+  const { password } = req.body
+  await User.update({ password: md5(password) }, {
     where: {
-      id: req.params.id
+      id: id
     }
-  }).then(() => res.send("berhasil mengupdate user"))
-    .catch(err => res.send("error mengupdate data", err))
+  }).then(() => {
+    req.session.msg = "Berhasil memperbaharui password"
+    res.redirect("/dashboard/user")
+  })
+    .catch(err => res.send("error mengupdate data ", err))
 }
 
-export default { getUser, getUserByID, createUser, deleteUser, updateUser }
+export default { getUserByID, createUser, deleteUser, updateUser }

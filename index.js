@@ -38,5 +38,5 @@ try {
 app.use(route)
 
 app.listen(port, () => {
-  console.log(`server running at port ${port}`)
+  console.log(`server running at http://localhost:` + port)
 })
