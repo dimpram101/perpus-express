@@ -11,7 +11,8 @@ const Category = db.define('categories', {
     type: DataTypes.STRING
   }
 }, {
-  freezeTableName: true
+  freezeTableName: true,
+  timestamps: false
 });
 
 

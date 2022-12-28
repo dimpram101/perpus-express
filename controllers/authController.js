@@ -36,4 +36,15 @@ const logout = (req, res) => {
   res.redirect('/login')
 }
 
-export default { index, login, logout }
+const register = async (req, res) => {
+  const user = await User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: md5(req.body.password),
+    role_id: req.body.role_id
+  })
+
+  res.json(user)
+}
+
+export default { index, login, logout, register }

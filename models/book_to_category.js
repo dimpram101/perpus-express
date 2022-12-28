@@ -7,6 +7,9 @@ const BookToCategory = db.define('book_to_category', {
     primaryKey: true,
     autoIncrement: true
   }
-}, {timestamps:false});
+}, {
+  freezeTableName: true,
+  timestamps:false
+});
 
 export default BookToCategory;

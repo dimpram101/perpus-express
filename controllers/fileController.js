@@ -2,16 +2,27 @@ import File from "../models/file.js";
 import Book from "../models/book.js";
 import User from "../models/user.js";
 import multer from "multer";
+import { v4 as uuidv4 } from "uuid"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public/bookFiles/');
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, uuidv4()+file.originalname);
   }
 })
 const upload = multer({storage:storage})
+
+const getFiles = async (req, res) => {
+  const file = await File.findAll({
+    include: {
+      model: Book
+    }
+  })
+
+  res.json(file)
+}
 
 const insertFile = async (req, res) => {
   const bookId = req.params.id
@@ -26,7 +37,8 @@ const insertFile = async (req, res) => {
     }).catch(err => console.error(err))
   })
 
-  res.send("Berhasil menambah file")
+  req.session.msg = `Berhasil menambahkan ${files.length} file ke dalam buku`
+  res.redirect("/dashboard/user/book")
 }
 
 const index = async (req, res) => {
@@ -38,4 +50,4 @@ const index = async (req, res) => {
     .catch(err => res.send(`Error Query ${err}`))
 }
 
-export default { insertFile, upload, index }
+export default { insertFile, upload, index, getFiles }

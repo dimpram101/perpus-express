@@ -25,11 +25,11 @@ app.use(session({
 
 try {
   await db.authenticate()
-  User.sync()
   Role.sync()
+  User.sync()
+  Category.sync()
   Book.sync()
   File.sync()
-  Category.sync()
   BookToCategory.sync()
 } catch (err) {
   console.error(err)

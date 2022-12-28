@@ -12,7 +12,8 @@ const Role = db.define('roles', {
     type: DataTypes.STRING,
   }
 }, {
-  freezeTableName: true
+  freezeTableName: true,
+  timestamps: false
 });
 
 export default Role;

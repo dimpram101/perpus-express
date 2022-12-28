@@ -12,22 +12,26 @@ route.get('/', (req, res) => {
   let user = req.session.user
   res.render('home/home-index', {user: user})
 })
+
 route.get('/login', authController.index)
 route.post('/login', authController.login)
 route.get('/logout', authController.logout)
+route.post('/register', authController.register)
 
 route.get('/dashboard', isLogged, dashboardController.index)
 route.get('/dashboard/user', isLogged, dashboardController.userProfile)
 route.post('/dashboard/user', isLogged, userController.createUser)
 route.put('/dashboard/user', isLogged, userController.updateUser)
-route.get('/dashboard/user/book', isLogged, bookController.getBook)
-route.get('/dashboard/book/create', isLogged, bookController.showCreateBook)
-route.post('/dashboard/book/create', isLogged, bookController.createBook)
 
-route.get('/dashboard/book/:id', [isLogged, isUserBook], bookController.getBookByID)
+route.get('/dashboard/user/book', isLogged, dashboardController.userBook)
+route.get('/dashboard/user/book/create', isLogged, dashboardController.showCreateBook)
+route.post('/dashboard/user/book/create', isLogged, bookController.createBook)
+route.get('/dashboard/user/book/:id', [isLogged, isUserBook], bookController.getBookByID)
+route.delete('/dashboard/user/book/:id', [isLogged, isUserBook], bookController.deleteBook)
 
-route.delete('/dashboard/book/:id', isLogged, bookController.deleteBook)
-route.get('/dashboard/book/:id/file', isLogged, fileController.index)
-route.post('/dashboard/book/:id/file', [isLogged, fileController.upload.array('files')] ,fileController.insertFile)
+route.get('/files', fileController.getFiles)
+
+route.get('/dashboard/user/book/:id/file', isLogged, dashboardController.showAddBookFile)
+route.post('/dashboard/user/book/:id/file', [isLogged, fileController.upload.array('files')] ,fileController.insertFile)
 
 export default route

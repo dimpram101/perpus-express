@@ -12,6 +12,7 @@ const isUserBook = async (req, res, next) => {
   const { id } = req.session.user
 
   const book = await Book.findOne({
+    attributes: ['id'],
     where: {
       id: req.params.id,
       user_id: id
@@ -19,7 +20,7 @@ const isUserBook = async (req, res, next) => {
   })
   if (!book) {
     req.session.msg = "Anda tidak memiliki buku dengan id tersebut"
-    res.redirect('/dashboard')
+    res.redirect('/dashboard/user/book')
   } else {
     next()
   }

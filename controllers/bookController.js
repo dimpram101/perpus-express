@@ -40,19 +40,15 @@ const getBookByID = async (req, res) => {
   res.send(book)
 }
 
-const showCreateBook = async (req, res) => {
-  const categories = await Category.findAll({attributes: ["id","name"]})
-  // res.send(categories)
-  res.render('createBook', {categories: categories})
-}
-
 const createBook = async (req, res) => {
   const { title, published_year, categoryIDs } = req.body
+  const { id } = req.session.user
   const cateId = categoryIDs[0].split(",").map(id => parseInt(id))
 
   const newBook = await Book.create({
     title: title,
     published_year: published_year,
+    user_id: id
   });
 
   cateId.forEach(async id => {
@@ -62,17 +58,21 @@ const createBook = async (req, res) => {
     })
   })
   
-  res.send(newBook)
+  res.redirect('/dashboard/user/book')
 }
 
-const deleteBook = (req, res) => {
-  Book.destroy({
+const deleteBook = async (req, res) => {
+  await Book.destroy({
     where: {
       id: req.params.id
-    }
-  }).then(res.send("berhasil menghapus buku"))
-    .catch(err => res.send(err))
+    },
+    cascade: true
+  }).catch(err => res.send(err))
+
+  req.session.msg = "Berhasil menghapus buku"
+  
+  res.redirect('back')
 }
 
 
-export default { getBook, getBookByID, showCreateBook, createBook, deleteBook }
+export default { getBook, getBookByID, createBook, deleteBook }

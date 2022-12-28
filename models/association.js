@@ -13,12 +13,16 @@ User.hasMany(Book, {
   foreignKey: "user_id"
 });
 
+Book.belongsTo(User, {
+  foreignKey: "user_id"
+})
+
 Book.hasMany(File, {
   foreignKey: "book_id"
 })
 
-Book.belongsTo(User, {
-  foreignKey: "user_id"
+File.belongsTo(Book, {
+  foreignKey: "book_id"
 })
 
 Book.belongsToMany(Category, { through: BookToCategory });
