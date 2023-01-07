@@ -26,4 +26,12 @@ const isUserBook = async (req, res, next) => {
   }
 }
 
-export { isLogged, isUserBook }
+const redirectAuthPage = (req, res, next) => {
+  if (req.session.user) {
+    res.redirect('/')
+  } else {
+    next()
+  }
+}
+
+export { isLogged, isUserBook, redirectAuthPage }

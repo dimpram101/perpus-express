@@ -4,7 +4,7 @@ import bookController from "../controllers/bookController.js";
 import fileController from "../controllers/fileController.js";
 import dashboardController from "../controllers/dashboardController.js";
 import authController from "../controllers/authController.js";
-import { isLogged, isUserBook } from "../middleware/middleware.js";
+import { isLogged, isUserBook, redirectAuthPage } from "../middleware/middleware.js";
 
 const route = express.Router();
 
@@ -13,9 +13,13 @@ route.get('/', (req, res) => {
   res.render('home/home-index', {user: user})
 })
 
-route.get('/login', authController.index)
+route.get('/login', redirectAuthPage, authController.index)
 route.post('/login', authController.login)
 route.get('/logout', authController.logout)
+route.get('/register', redirectAuthPage, (req, res) => {
+  const message = req.session.err || ""
+  res.render("users/register", {message: message})
+})
 route.post('/register', authController.register)
 
 route.get('/dashboard', isLogged, dashboardController.index)
