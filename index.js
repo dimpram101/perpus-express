@@ -24,13 +24,13 @@ app.use(session({
 }))
 
 try {
-  await db.authenticate()
-  Role.sync()
-  User.sync()
-  Category.sync()
-  Book.sync()
-  File.sync()
-  BookToCategory.sync()
+  // await db.authenticate()
+  // Role.sync()
+  // User.sync()
+  // Category.sync()
+  // Book.sync()
+  // File.sync()
+  // BookToCategory.sync()
 } catch (err) {
   console.error(err)
 }

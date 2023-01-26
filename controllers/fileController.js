@@ -9,7 +9,8 @@ const storage = multer.diskStorage({
     cb(null, './public/bookFiles/');
   },
   filename: (req, file, cb) => {
-    cb(null, uuidv4()+file.originalname);
+    console.log(file.mimetype);
+    cb(null, uuidv4()+"."+file.mimetype.split('/').reverse()[0]);
   }
 })
 const upload = multer({storage:storage})

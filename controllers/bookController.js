@@ -1,8 +1,10 @@
+import db from "../config/database.js";
 import Book from "../models/book.js";
 import BookToCategory from "../models/book_to_category.js";
 import Category from "../models/category.js";
 import File from "../models/file.js";
 import User from "../models/user.js";
+import { Op, QueryTypes } from "sequelize";
 
 const getBook = async (req, res) => {
   // const userId = req.session.
@@ -18,6 +20,35 @@ const getBook = async (req, res) => {
     }
   })
   res.send(book)
+}
+
+const getAllBook = async (req, res) => {
+  // const userId = req.session.
+  let query = req.query.title || "";
+
+  if (query) {
+    const book = await Book.findAll({
+      where: {
+        title: {
+          [Op.like] : `%${query}%`
+        }
+      },
+      include: {
+        model: Category,
+        attributes: ['name']
+      }
+    })
+    res.send(book);
+  } else {
+    const book = await Book.findAll({
+      include: {
+        model: Category,
+        attributes: ['name']
+      }
+    })
+    res.send(book);
+  }
+
 }
 
 const getBookByID = async (req, res) => {
@@ -75,4 +106,4 @@ const deleteBook = async (req, res) => {
 }
 
 
-export default { getBook, getBookByID, createBook, deleteBook }
+export default { getBook, getBookByID, createBook, deleteBook, getAllBook }

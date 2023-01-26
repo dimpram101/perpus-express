@@ -17,7 +17,7 @@ const login = async (req, res) => {
       email: email,
       password: md5(password)
     },
-    attributes : ['id', 'name', 'email'],
+    attributes : ['id', 'name'],
     include: {
       model: Role,
       attributes: ['name']

@@ -34,7 +34,7 @@ route.get('/dashboard/user/book/:id', [isLogged, isUserBook], bookController.get
 route.delete('/dashboard/user/book/:id', [isLogged, isUserBook], bookController.deleteBook)
 
 route.get('/files', fileController.getFiles)
-
+route.get('/book', bookController.getAllBook)
 route.get('/dashboard/user/book/:id/file', isLogged, dashboardController.showAddBookFile)
 route.post('/dashboard/user/book/:id/file', [isLogged, fileController.upload.array('files')] ,fileController.insertFile)
 
