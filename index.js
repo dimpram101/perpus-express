@@ -1,10 +1,10 @@
 import express from "express";
-import ejs from "ejs";
 import methodOverride from "method-override";
-import db from "./config/database.js";
-import { User, Role, Book, File, Category, BookToCategory } from "./models/association.js"
-import route from "./routes/route.js";
 import session from "express-session";
+import route from "./routes/route.js";
+// import ejs from "ejs";
+import db from "./config/database.js";
+import { User, Role, Book, File, Category, BookToCategory, BookImage } from "./models/association.js"
 const port = 5000;
 
 const app = express();
@@ -24,13 +24,15 @@ app.use(session({
 }))
 
 try {
-  // await db.authenticate()
+  await db.authenticate()
+  // await db.sync()
   // Role.sync()
   // User.sync()
   // Category.sync()
   // Book.sync()
   // File.sync()
   // BookToCategory.sync()
+  // BookImage.sync()
 } catch (err) {
   console.error(err)
 }

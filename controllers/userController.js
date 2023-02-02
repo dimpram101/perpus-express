@@ -39,6 +39,20 @@ const deleteUser = (req, res) => {
 const updateUser = async (req, res) => {
   const { id } = req.session.user
   const { password } = req.body
+
+  const userPassword = await User.findOne({
+    where: {
+      id: id,
+      password: md5(password)
+    },
+    attributes: ['id']
+  });
+
+  if (userPassword) {
+    req.session.msg = "Password can't be the same like before" 
+    return res.redirect("/dashboard/user")
+  }
+
   await User.update({ password: md5(password) }, {
     where: {
       id: id

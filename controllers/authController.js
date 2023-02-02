@@ -17,7 +17,7 @@ const login = async (req, res) => {
       email: email,
       password: md5(password)
     },
-    attributes : ['id', 'name'],
+    attributes : ['id', 'name', 'email'],
     include: {
       model: Role,
       attributes: ['name']
@@ -51,7 +51,14 @@ const register = async (req, res) => {
     email: email,
     password: md5(password),
     role_id: intRoleId
+  }, {
+    include: {
+      model: Role,
+      attributes: ["name"]
+    }
   })
+
+  console.log(user);
 
   if (!user) {
     req.session.err = "Incorrect email or password"

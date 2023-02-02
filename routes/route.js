@@ -4,7 +4,7 @@ import bookController from "../controllers/bookController.js";
 import fileController from "../controllers/fileController.js";
 import dashboardController from "../controllers/dashboardController.js";
 import authController from "../controllers/authController.js";
-import { isLogged, isUserBook, redirectAuthPage } from "../middleware/middleware.js";
+import { isLogged, isUserAuthor, isUserBook, redirectAuthPage } from "../middleware/middleware.js";
 
 const route = express.Router();
 
@@ -27,7 +27,7 @@ route.get('/dashboard/user', isLogged, dashboardController.userProfile)
 route.post('/dashboard/user', isLogged, userController.createUser)
 route.put('/dashboard/user', isLogged, userController.updateUser)
 
-route.get('/dashboard/user/book', isLogged, dashboardController.userBook)
+route.get('/dashboard/user/book', [isLogged, isUserAuthor], dashboardController.userBook)
 route.get('/dashboard/user/book/create', isLogged, dashboardController.showCreateBook)
 route.post('/dashboard/user/book/create', isLogged, bookController.createBook)
 route.get('/dashboard/user/book/:id', [isLogged, isUserBook], bookController.getBookByID)

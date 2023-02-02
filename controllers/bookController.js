@@ -23,7 +23,6 @@ const getBook = async (req, res) => {
 }
 
 const getAllBook = async (req, res) => {
-  // const userId = req.session.
   let query = req.query.title || "";
 
   if (query) {
@@ -33,22 +32,25 @@ const getAllBook = async (req, res) => {
           [Op.like] : `%${query}%`
         }
       },
+      attributes: ['id', 'title', 'published_year'],
       include: {
         model: Category,
         attributes: ['name']
       }
     })
-    res.send(book);
+    // res.send(book);
+    res.render('home/book-index', {books: book, user: req.session.user})
   } else {
     const book = await Book.findAll({
+      attributes: ['id', 'title', 'published_year'],
       include: {
         model: Category,
         attributes: ['name']
       }
     })
-    res.send(book);
+    // res.send(book);
+    res.render('home/book-index', {books: book, user: req.session.user})
   }
-
 }
 
 const getBookByID = async (req, res) => {
